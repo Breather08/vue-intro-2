@@ -1,6 +1,7 @@
 <template>
   <v-app class="blue-grey lighten-3">
     <v-main>
+      <ProgressBar />
       <NoteList />
     </v-main>
   </v-app>
@@ -8,12 +9,14 @@
 
 <script>
 import NoteList from "@/components/NoteList.vue";
+import ProgressBar from "@/components/ProgressBar.vue";
 
 export default {
   name: "App",
 
   components: {
-    NoteList
+    NoteList,
+    ProgressBar
   },
 
   data: () => ({})
@@ -30,5 +33,10 @@ export default {
 
 #app {
   background: #f1f3f8;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

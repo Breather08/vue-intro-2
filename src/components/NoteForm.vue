@@ -1,14 +1,24 @@
 <template>
   <div class="note-form">
     <v-card class="rounded-lg">
-      <input type="text" v-model="title" />
-      <textarea v-model="textContent"></textarea>
+      <input type="text" v-model="title" placeholder="Your title" />
+      <textarea v-model="textContent" placeholder="Your Content"></textarea>
     </v-card>
-    <div class="add-note" @click="addNote"><span>add</span></div>
+    <div
+      :class="{
+        'add-note': true,
+        max: this.notes.length > 9 || title === '' || textContent === ''
+      }"
+      @click="addNote"
+    >
+      <span>add</span>
+    </div>
   </div>
 </template>
 
 <script>
+import { eventBus } from "@/main";
+
 export default {
   props: {
     notes: {
@@ -25,22 +35,69 @@ export default {
   },
   methods: {
     addNote() {
-      const note = {
-        id: this.notes.length,
-        title: this.title,
-        textContent: this.textContent
-      };
-      this.$emit("addNote", [...this.notes, note]);
+      if (this.notes.length < 10) {
+        const note = {
+          id: this.notes.length,
+          title: this.title,
+          textContent: this.textContent
+        };
+
+        eventBus.$emit("sendNotes", this.notes);
+
+        if (this.title !== "" && this.textContent !== "") {
+          this.title = "";
+          this.textContent = "";
+          this.$emit("addNote", [note, ...this.notes]);
+        }
+      }
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+$transitionDuration: 0.5s;
+
+@mixin addButton($color) {
+  width: 36px;
+  height: 72px;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  transform: translateY(18px);
+  background: $color;
+  border-radius: 0px 15px 15px 0px;
+
+  transition: $transitionDuration;
+
+  cursor: pointer;
+
+  span {
+    transform: rotate(-90deg);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 72px;
+    background: $color;
+    z-index: -10;
+    transform: translate(-10px);
+    transition: $transitionDuration;
+  }
+
+  &:hover {
+    transform: translate(5px, 18px);
+  }
+}
+
 .note-form {
   position: relative;
   display: flex;
   .v-card {
+    padding: 10px;
     background: #fff;
     width: 274px;
     height: 180px;
@@ -49,56 +106,28 @@ export default {
     textarea {
       width: 80%;
       margin: 5px;
-      border-bottom: 1px solid black;
       outline: none;
       transition: 0.4s;
-      &:focus {
-        border-bottom: 1px solid blue;
-      }
     }
 
     input {
       height: 30px;
+      margin-bottom: 10px;
+      font-size: 18px;
     }
 
     textarea {
       height: 100px;
       resize: none;
+      color: #666666;
+      font-size: 14px;
     }
   }
   .add-note {
-    width: 36px;
-    height: 72px;
-
-    position: relative;
-    display: flex;
-    align-items: center;
-    transform: translateY(18px);
-    // z-index: -10;
-
-    background: #84e0a9;
-    border-radius: 0px 15px 15px 0px;
-
-    transition: 0.5s;
-
-    cursor: pointer;
-
-    span {
-      transform: rotate(-90deg);
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: 15px;
-      height: 72px;
-      background: #84e0a9;
-      z-index: -10;
-      transform: translate(-10px);
-    }
-
-    &:hover {
-      transform: translate(5px, 18px);
+    // @include addButton(grey);
+    @include addButton(#84e0a9);
+    &.max {
+      filter: grayscale(100%);
     }
   }
 }

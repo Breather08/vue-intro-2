@@ -1,6 +1,10 @@
 <template>
   <div class="note-list">
-    <NoteForm :notes="notes" @addNote="updateNotes($event)" />
+    <NoteForm
+      :notes="notes"
+      @addNote="updateNotes($event)"
+      @sendNotes="sendNotes"
+    />
 
     <NoteItem
       v-for="(note, index) in notes"
@@ -15,37 +19,20 @@
 <script>
 import NoteItem from "@/components/NoteItem.vue";
 import NoteForm from "@/components/NoteForm.vue";
+import { eventBus } from "@/main";
 
 export default {
   data() {
     return {
-      notes: [
-        {
-          id: 0,
-          title: "Title",
-          textContent: "Lorem ipsum dolar sit amet"
-        },
-        {
-          id: 1,
-          title: "Title",
-          textContent: "Lorem ipsum dolar sit amet"
-        },
-        {
-          id: 2,
-          title: "Title",
-          textContent: "Lorem ipsum dolar sit amet"
-        },
-        {
-          id: 3,
-          title: "Title",
-          textContent: "Lorem ipsum dolar sit amet"
-        }
-      ]
+      notes: []
     };
   },
   methods: {
     updateNotes(data) {
       this.notes = data;
+    },
+    sendNotes() {
+      eventBus.$emit("sendNotes", this.notes);
     }
   },
   components: {

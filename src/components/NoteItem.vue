@@ -76,6 +76,9 @@ export default {
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
       this.$emit("deleteNote", filtered);
     }
+  },
+  beforeDestroy() {
+    setTimeout(() => console.log("bye"), 1000);
   }
 };
 </script>
