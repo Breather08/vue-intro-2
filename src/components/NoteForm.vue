@@ -9,7 +9,7 @@
         'add-note': true,
         max: this.notes.length > 9 || title === '' || textContent === ''
       }"
-      @click="addNote"
+      @click="clickAdd"
     >
       <span>add</span>
     </div>
@@ -30,26 +30,33 @@ export default {
     return {
       id: this.notes.length,
       title: "",
-      textContent: ""
+      textContent: "",
+      message: ""
     };
   },
   methods: {
-    addNote() {
-      if (this.notes.length < 10) {
+    clickAdd() {
+      if (this.title && this.textContent && this.notes.length < 10) {
+        this.message = "";
+
         const note = {
           id: this.notes.length,
           title: this.title,
           textContent: this.textContent
         };
 
-        eventBus.$emit("sendNotes", this.notes);
+        this.title = "";
+        this.textContent = "";
 
-        if (this.title !== "" && this.textContent !== "") {
-          this.title = "";
-          this.textContent = "";
-          this.$emit("addNote", [note, ...this.notes]);
+        eventBus.$emit("addNote", note);
+      } else {
+        if (!this.title || !this.textContent) {
+          this.message = "No empty fields allowed";
+        } else if (this.notes.length === 10) {
+          this.message = "Notes limit exceeded";
         }
       }
+      eventBus.$emit("message", this.message);
     }
   }
 };

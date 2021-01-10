@@ -6,10 +6,14 @@
         v-for="(circle, i) in 10"
         :key="`${circle}-${i}`"
         :id="`${circle}-${i}`"
-      ></div>
+      >
+        {{ i }}
+      </div>
       <div
         class="main-circle"
-        :style="{ left: `calc(${(this.amount + 1) * 10}vw - 90px)` }"
+        :style="{
+          left: `calc(${0 * 10}% - ${50 / 10}px)`
+        }"
       ></div>
     </div>
   </div>
@@ -26,6 +30,7 @@ export default {
   },
   created() {
     eventBus.$on("sendNotes", (data) => {
+      console.log("lol");
       this.amount = data.length + 1;
     });
   }
@@ -33,20 +38,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$circle-radius: 50;
+
 .progress {
-  width: 100%;
+  position: relative;
+  width: 90vw;
   height: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
+  left: 50%;
+  transform: translate(-50%);
   .chart {
     position: relative;
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
     .checkpoints {
-      width: 50px;
-      height: 50px;
+      width: #{$circle-radius}px;
+      height: #{$circle-radius}px;
 
       background: #d6e0f0;
       border-radius: 50%;
@@ -54,12 +64,16 @@ export default {
     .main-circle {
       position: absolute;
 
-      width: 50px;
-      height: 50px;
+      width: #{$circle-radius}px;
+      height: #{$circle-radius}px;
 
       border-radius: 50%;
       background: #84e0a9;
+
+      transition: 1s ease-out;
     }
+
+    filter: url(#gooey);
   }
 }
 </style>

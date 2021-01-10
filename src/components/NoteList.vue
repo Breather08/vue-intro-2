@@ -1,17 +1,12 @@
 <template>
   <div class="note-list">
-    <NoteForm
-      :notes="notes"
-      @addNote="updateNotes($event)"
-      @sendNotes="sendNotes"
-    />
+    <NoteForm :notes="notes" />
 
     <NoteItem
       v-for="(note, index) in notes"
       :key="index"
       :info="note"
       :notes="notes"
-      @deleteNote="updateNotes($event)"
     />
   </div>
 </template>
@@ -27,17 +22,18 @@ export default {
       notes: []
     };
   },
-  methods: {
-    updateNotes(data) {
-      this.notes = data;
-    },
-    sendNotes() {
-      eventBus.$emit("sendNotes", this.notes);
-    }
-  },
   components: {
     NoteItem,
     NoteForm
+  },
+  created() {
+    eventBus.$on("addNote", (note) => {
+      this.notes.unshift(note);
+    });
+
+    eventBus.$on("deleteNote", (filteredNotes) => {
+      this.notes = filteredNotes;
+    });
   }
 };
 </script>

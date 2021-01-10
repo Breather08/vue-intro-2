@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { eventBus } from "@/main";
+
 export default {
   props: {
     info: {
@@ -74,11 +76,8 @@ export default {
   methods: {
     deleteNote() {
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
-      this.$emit("deleteNote", filtered);
+      eventBus.$emit("deleteNote", filtered);
     }
-  },
-  beforeDestroy() {
-    setTimeout(() => console.log("bye"), 1000);
   }
 };
 </script>
