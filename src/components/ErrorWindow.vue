@@ -18,7 +18,6 @@ export default {
   },
   created() {
     eventBus.$on("message", (msg) => {
-      console.log(msg);
       this.message = msg;
     });
   }

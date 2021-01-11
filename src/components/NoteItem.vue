@@ -1,14 +1,35 @@
 <template>
   <div class="note-item">
-    <v-card class="rounded-lg z-index-10">
+    <v-card class="rounded-lg z-index-10" v-if="!isEditing">
       <v-card-title> {{ info.title }} </v-card-title>
       <v-card-text style="max-height: 100px" class="overflow-y-auto">
         {{ info.textContent }}
       </v-card-text>
     </v-card>
+    <v-card class="rounded-lg" v-else>
+      <input
+        type="text"
+        v-model="note.title"
+        placeholder="Your title"
+        :style="{
+          'padding-left': '10px',
+          height: '30px'
+        }"
+      />
+      <textarea
+        v-model="note.textContent"
+        placeholder="Your Content"
+        :style="{
+          'padding-left': '10px',
+          'padding-top': '5px',
+          height: '95px'
+        }"
+      ></textarea>
+    </v-card>
     <div class="side-options">
-      <div class="edit">
+      <div class="edit" @click="editNote">
         <svg
+          :class="['pencil', isEditing ? 'animate' : '']"
           width="15"
           height="15"
           viewBox="0 0 22 22"
@@ -23,9 +44,24 @@
             stroke-linejoin="round"
           />
         </svg>
+        <svg
+          class="path"
+          width="34"
+          height="8"
+          viewBox="0 0 34 8"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          v-if="isEditing"
+        >
+          <path
+            d="M1 5.5L2.40424 3.12635C3.85291 0.677616 7.4962 1.01304 8.47341 3.68511L8.61187 4.06371C9.62772 6.84141 13.5375 6.89345 14.6269 4.14376V4.14376C15.6785 1.48937 19.409 1.41683 20.563 4.02834L20.9353 4.87074C22.0787 7.45833 25.7911 7.33671 26.7628 4.67983V4.67983C27.7517 1.97584 31.5533 1.91349 32.6304 4.5836L33 5.5"
+            stroke="black"
+          />
+        </svg>
       </div>
       <div class="delete" @click="deleteNote">
         <svg
+          class="destroy"
           width="15"
           height="15"
           viewBox="0 0 22 22"
@@ -73,10 +109,28 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isEditing: false,
+      note: {
+        title: this.info.title,
+        textContent: this.info.textContent
+      }
+    };
+  },
   methods: {
     deleteNote() {
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
       eventBus.$emit("deleteNote", filtered);
+    },
+    editNote() {
+      this.info.title = this.note.title;
+      this.info.textContent = this.note.textContent;
+      if (this.info.textContent !== "" && this.info.title !== "") {
+        this.isEditing = !this.isEditing;
+      } else {
+        eventBus.$emit("message", "No empty fields allowed!");
+      }
     }
   }
 };
@@ -99,9 +153,23 @@ export default {
 
   cursor: pointer;
 
-  svg {
+  .pencil,
+  .destroy {
     transform: translate(9px);
     pointer-events: none;
+  }
+
+  .pencil.animate {
+    animation: write 1s infinite linear;
+  }
+
+  .path {
+    position: absolute;
+    width: 20px;
+    height: 15px;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%);
   }
 
   &::before {
@@ -116,29 +184,67 @@ export default {
   &:hover {
     transform: translate(5px);
   }
+
+  @keyframes write {
+    0% {
+      transform: translate(-8px, 3px);
+    }
+    20% {
+      transform: translate(-4px, 0px);
+    }
+    40% {
+      transform: translate(0px, 3px);
+    }
+    60% {
+      transform: translate(4px, 0px);
+    }
+    80% {
+      transform: translate(8px, 3px);
+    }
+    100% {
+      transform: translate(12px, 0px);
+    }
+  }
 }
 
 .note-item {
   position: relative;
   display: flex;
 
+  &.editing {
+    background: grey;
+    border: 1px solid black;
+  }
+
   .v-card {
     width: 300px;
     height: 180px;
     z-index: 10;
-    &::before {
-      content: "";
-      position: absolute;
-      top: 43px;
+
+    input,
+    textarea {
+      width: 80%;
+      margin-top: 15px;
+      margin-left: 15px;
+      outline: none;
+      transition: 0.4s;
+      border-radius: 7px;
+    }
+
+    input {
+      position: relative;
       height: 30px;
-      width: 95%;
-      background: rgb(255, 255, 255);
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 1) 64%,
-        rgba(255, 255, 255, 0.1166666495699843) 100%
-      );
+      font-size: 18px;
+      &:focus {
+        border: "1px solid #98A2FF";
+      }
+    }
+
+    textarea {
+      height: 100px;
+      resize: none;
+      color: #666666;
+      font-size: 14px;
     }
   }
 
