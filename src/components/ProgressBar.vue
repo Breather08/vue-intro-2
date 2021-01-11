@@ -6,13 +6,11 @@
         v-for="(circle, i) in 10"
         :key="`${circle}-${i}`"
         :id="`${circle}-${i}`"
-      >
-        {{ i }}
-      </div>
+      ></div>
       <div
         class="main-circle"
         :style="{
-          left: `calc(${0 * 10}% - ${50 / 10}px)`
+          left: `calc(${amount * 10}vw)`
         }"
       ></div>
     </div>
@@ -30,8 +28,7 @@ export default {
   },
   created() {
     eventBus.$on("sendNotes", (data) => {
-      console.log("lol");
-      this.amount = data.length + 1;
+      this.amount = data;
     });
   }
 };

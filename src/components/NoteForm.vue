@@ -49,6 +49,7 @@ export default {
         this.textContent = "";
 
         eventBus.$emit("addNote", note);
+        eventBus.$emit("sendNotes", this.notes.length);
       } else {
         if (!this.title || !this.textContent) {
           this.message = "No empty fields allowed";

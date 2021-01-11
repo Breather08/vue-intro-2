@@ -113,17 +113,26 @@ export default {
     return {
       isEditing: false,
       note: {
-        title: this.info.title,
-        textContent: this.info.textContent
+        title: this.notes.find((data) => data.id === this.info.id).title,
+        textContent: this.notes.find((data) => data.id === this.info.id)
+          .textContent
       }
     };
   },
   methods: {
     deleteNote() {
+      this.isEditing = false;
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
       eventBus.$emit("deleteNote", filtered);
+      eventBus.$emit("sendNotes", this.notes.length - 1);
     },
     editNote() {
+      console.log("Info ID:", this.note.title);
+      console.log(
+        "Notes ID:",
+        this.notes.find((data) => data.id === this.info.id).title,
+        this.notes.find((data) => data.id === this.info.id).textContent
+      );
       this.info.title = this.note.title;
       this.info.textContent = this.note.textContent;
       if (this.info.textContent !== "" && this.info.title !== "") {
