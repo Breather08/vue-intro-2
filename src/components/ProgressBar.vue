@@ -2,15 +2,14 @@
   <div class="progress">
     <div class="chart">
       <div
-        class="checkpoints"
         v-for="(circle, i) in 10"
-        :key="`${circle}-${i}`"
-        :id="`${circle}-${i}`"
+        :key="`circle-${i}`"
+        :id="`circle-${i}`"
       ></div>
       <div
         class="main-circle"
         :style="{
-          left: `calc(${amount * 10}vw)`
+          transform: `translate(${amount * 10 - 45}vw)`
         }"
       ></div>
     </div>
@@ -23,49 +22,54 @@ import { eventBus } from "@/main";
 export default {
   data() {
     return {
-      amount: 0
+      amount: -1
     };
   },
   created() {
     eventBus.$on("sendNotes", (data) => {
-      this.amount = data;
+      this.amount = data - 1;
     });
   }
 };
 </script>
 
 <style lang="scss" scoped>
-$circle-radius: 50;
+$circle-radius: 3vw;
 
 .progress {
   position: relative;
-  width: 90vw;
+  width: 100vw;
   height: 150px;
   display: flex;
-  justify-content: center;
   align-items: center;
   left: 50%;
   transform: translate(-50%);
   .chart {
-    position: relative;
-    display: flex;
     width: 100%;
-    justify-content: space-between;
-    .checkpoints {
-      width: #{$circle-radius}px;
-      height: #{$circle-radius}px;
+    display: flex;
+    justify-content: center;
+    @for $i from 0 through 10 {
+      #circle-#{$i} {
+        position: absolute;
 
-      background: #d6e0f0;
-      border-radius: 50%;
+        width: #{$circle-radius};
+        height: #{$circle-radius};
+
+        transform: translate($i * 10vw - 45vw);
+
+        background: #d6e0f0;
+        border-radius: 50%;
+      }
     }
+
     .main-circle {
       position: absolute;
 
-      width: #{$circle-radius}px;
-      height: #{$circle-radius}px;
+      width: #{$circle-radius};
+      height: #{$circle-radius};
 
-      border-radius: 50%;
       background: #84e0a9;
+      border-radius: 50%;
 
       transition: 1s ease-out;
     }

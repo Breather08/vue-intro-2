@@ -137,6 +137,9 @@ $transitionDuration: 0.5s;
     &.max {
       filter: grayscale(100%);
     }
+    span {
+      user-select: none;
+    }
   }
 }
 </style>

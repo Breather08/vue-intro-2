@@ -1,15 +1,15 @@
 <template>
   <div class="note-item">
     <v-card class="rounded-lg z-index-10" v-if="!isEditing">
-      <v-card-title> {{ info.title }} </v-card-title>
+      <v-card-title> {{ this.info.title }} </v-card-title>
       <v-card-text style="max-height: 100px" class="overflow-y-auto">
-        {{ info.textContent }}
+        {{ this.info.textContent }}
       </v-card-text>
     </v-card>
     <v-card class="rounded-lg" v-else>
       <input
+        v-model="info.title"
         type="text"
-        v-model="note.title"
         placeholder="Your title"
         :style="{
           'padding-left': '10px',
@@ -17,7 +17,7 @@
         }"
       />
       <textarea
-        v-model="note.textContent"
+        v-model="info.textContent"
         placeholder="Your Content"
         :style="{
           'padding-left': '10px',
@@ -111,12 +111,7 @@ export default {
   },
   data() {
     return {
-      isEditing: false,
-      note: {
-        title: this.notes.find((data) => data.id === this.info.id).title,
-        textContent: this.notes.find((data) => data.id === this.info.id)
-          .textContent
-      }
+      isEditing: false
     };
   },
   methods: {
@@ -127,14 +122,6 @@ export default {
       eventBus.$emit("sendNotes", this.notes.length - 1);
     },
     editNote() {
-      console.log("Info ID:", this.note.title);
-      console.log(
-        "Notes ID:",
-        this.notes.find((data) => data.id === this.info.id).title,
-        this.notes.find((data) => data.id === this.info.id).textContent
-      );
-      this.info.title = this.note.title;
-      this.info.textContent = this.note.textContent;
       if (this.info.textContent !== "" && this.info.title !== "") {
         this.isEditing = !this.isEditing;
       } else {
@@ -179,6 +166,9 @@ export default {
     bottom: 2%;
     left: 50%;
     transform: translate(-50%);
+    stroke-dashoffset: 43.1;
+    stroke-dasharray: 43.1;
+    animation: stroke 1s infinite linear;
   }
 
   &::before {
@@ -212,6 +202,12 @@ export default {
     }
     100% {
       transform: translate(12px, 0px);
+    }
+  }
+
+  @keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
     }
   }
 }
