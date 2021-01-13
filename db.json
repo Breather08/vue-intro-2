@@ -1,23 +1,21 @@
-{
-  "notes": [
-    {
-      "id": "1",
-      "title": "some title 1"
-    },
-    {
-      "id": "2",
-      "title": "some title 2"
-    },
-    {
-      "id": "3",
-      "title": "some title 3"
-    },
-    {
-      "id": "4",
-      "title": "some title 4"
-    },
-    {
-      "id": "dd_LegJ"
-    }
-  ]
-}
+[
+  {
+    "id": "1",
+    "title": "some title 1"
+  },
+  {
+    "id": "2",
+    "title": "some title 2"
+  },
+  {
+    "id": "3",
+    "title": "some title 3"
+  },
+  {
+    "id": "4",
+    "title": "some title 4"
+  },
+  {
+    "id": "dd_LegJ"
+  }
+]

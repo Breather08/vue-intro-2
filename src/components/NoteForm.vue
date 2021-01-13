@@ -18,6 +18,7 @@
 
 <script>
 import { eventBus } from "@/main";
+import { addNote } from "@/utils/API";
 
 export default {
   props: {
@@ -47,6 +48,8 @@ export default {
 
         this.title = "";
         this.textContent = "";
+
+        addNote(note);
 
         eventBus.$emit("addNote", note);
         eventBus.$emit("sendNotes", this.notes.length);
