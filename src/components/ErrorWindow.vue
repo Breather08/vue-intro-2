@@ -1,5 +1,5 @@
 <template>
-  <div
+  <v-card
     class="alert-msg"
     :style="{ transform: `translate(${this.message ? show() : 320}px)` }"
     ref="alert"
@@ -38,7 +38,7 @@
     <div class="warning-msg">
       <span>{{ this.message }}</span>
     </div>
-  </div>
+  </v-card>
 </template>
 
 <script>

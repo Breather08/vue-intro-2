@@ -132,7 +132,6 @@ $transitionDuration: 0.5s;
     }
   }
   .add-note {
-    // @include addButton(grey);
     @include addButton(#84e0a9);
     &.max {
       filter: grayscale(100%);
