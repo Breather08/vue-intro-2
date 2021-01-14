@@ -18,7 +18,7 @@
 
 <script>
 import { eventBus } from "@/main";
-import { addNote, getNotes } from "@/utils/API";
+import { editNote, getNotes, createNote } from "@/utils/API";
 
 export default {
   props: {
@@ -32,14 +32,13 @@ export default {
       id: this.notes.length,
       title: "",
       textContent: "",
-      message: ""
+      message: "",
+      API_ID: ""
     };
   },
   methods: {
     async clickAdd() {
       if (this.title && this.textContent && this.notes.length < 10) {
-        await addNote([...this.notes, note]);
-
         this.message = "";
 
         const note = {
@@ -51,7 +50,12 @@ export default {
         this.title = "";
         this.textContent = "";
 
-        await getNotes();
+        if (this.notes.length === 0) {
+          await createNote([note]).then((resp) => (this.API_ID = resp));
+        }
+
+        await editNote(note, this.API_ID);
+        await getNotes(this.API_ID);
 
         eventBus.$emit("addNote", note);
         eventBus.$emit("sendNotes", this.notes.length);

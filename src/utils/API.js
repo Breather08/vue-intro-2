@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const URL = "https://api.jsonbin.io/b";
-let API_ID = "";
 
 const API = axios.create({
   headers: {
@@ -12,22 +11,22 @@ const API = axios.create({
   }
 });
 
-export const getNotes = () =>
+export const getNotes = (API_ID) =>
   API.get(`${URL}/${API_ID}`)
     .then((resp) => console.log("GET:", resp.data))
     .catch((err) => {
       throw err;
     });
 
-export const addNote = (note) =>
+export const createNote = (note) =>
   API.post(URL, note)
-    .then((resp) => (API_ID = resp.data.id))
+    .then((resp) => resp.data.id)
     .catch((err) => {
       throw err.response.data;
     });
 
-export const editNote = (id, editedNote) =>
-  API.patch(`${URL}/${id}`, editedNote)
+export const editNote = (editedNote, API_ID) =>
+  API.put(`${URL}/${API_ID}`, editedNote)
     .then((resp) => resp.data)
     .catch((err) => {
       throw err;
