@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      id: this.notes.length,
+      id: 0,
       title: "",
       textContent: "",
       message: "",
@@ -39,10 +39,14 @@ export default {
   methods: {
     async clickAdd() {
       if (this.title && this.textContent && this.notes.length < 10) {
+        this.id++;
+        if (this.notes.length === 0) {
+          await createNote([note]).then((resp) => (this.API_ID = resp));
+        }
         this.message = "";
 
         const note = {
-          id: this.notes.length,
+          id: this.id,
           title: this.title,
           textContent: this.textContent
         };
@@ -50,15 +54,12 @@ export default {
         this.title = "";
         this.textContent = "";
 
-        if (this.notes.length === 0) {
-          await createNote([note]).then((resp) => (this.API_ID = resp));
-        }
-
-        await editNote(note, this.API_ID);
-        await getNotes(this.API_ID);
-
         eventBus.$emit("addNote", note);
         eventBus.$emit("sendNotes", this.notes.length);
+
+        await editNote([...this.notes], this.API_ID);
+        await getNotes(this.API_ID);
+        await eventBus.$emit("api-id", this.API_ID);
       } else {
         if (!this.title || !this.textContent) {
           this.message = "No empty fields allowed";

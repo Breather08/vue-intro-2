@@ -13,7 +13,7 @@ const API = axios.create({
 
 export const getNotes = (API_ID) =>
   API.get(`${URL}/${API_ID}`)
-    .then((resp) => console.log("GET:", resp.data))
+    .then((resp) => console.log("GET:", resp.data, "API ID:", API_ID))
     .catch((err) => {
       throw err;
     });

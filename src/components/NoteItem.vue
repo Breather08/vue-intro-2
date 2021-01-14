@@ -97,6 +97,7 @@
 
 <script>
 import { eventBus } from "@/main";
+import { editNote, getNotes } from "@/utils/API";
 
 export default {
   props: {
@@ -107,6 +108,10 @@ export default {
     notes: {
       type: Array,
       required: true
+    },
+    API_ID: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -115,11 +120,15 @@ export default {
     };
   },
   methods: {
-    deleteNote() {
+    async deleteNote() {
       this.isEditing = false;
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
       eventBus.$emit("deleteNote", filtered);
       eventBus.$emit("sendNotes", this.notes.length - 1);
+      if (filtered.length > 0) {
+        await editNote(filtered, this.API_ID);
+      }
+      await getNotes(this.API_ID);
     },
     editNote() {
       if (this.info.textContent !== "" && this.info.title !== "") {

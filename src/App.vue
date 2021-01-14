@@ -51,5 +51,6 @@ export default {
   position: relative;
   background: #f1f3f8;
   width: 100vw;
+  overflow: hidden;
 }
 </style>

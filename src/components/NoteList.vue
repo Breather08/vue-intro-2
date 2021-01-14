@@ -7,6 +7,7 @@
       :key="index"
       :info="note"
       :notes="notes"
+      :API_ID="API_ID"
     />
   </div>
 </template>
@@ -19,7 +20,8 @@ import { eventBus } from "@/main";
 export default {
   data() {
     return {
-      notes: []
+      notes: [],
+      API_ID: ""
     };
   },
   components: {
@@ -27,13 +29,13 @@ export default {
     NoteForm
   },
   created() {
-    eventBus.$on("addNote", (note) => {
-      this.notes.unshift(note);
+    eventBus.$on("addNote", (newNote) => {
+      this.notes.unshift(newNote);
     });
 
-    eventBus.$on("deleteNote", (filteredNotes) => {
-      this.notes = filteredNotes;
-    });
+    eventBus.$on("deleteNote", (filteredNotes) => (this.notes = filteredNotes));
+
+    eventBus.$on("api-id", (id) => (this.API_ID = id));
   }
 };
 </script>
