@@ -6,11 +6,11 @@ import ErrorWindow from "@/components/ErrorWindow.vue";
 // import ProgressBar from "@/components/ProgressBar.vue";
 
 describe("ErrorWindow.vue", () => {
-  it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(ErrorWindow, {
-      propsData: { msg }
-    });
-    expect(wrapper.text()).toMatch(msg);
+  it("shows the error window", () => {
+    const wrapper = shallowMount(ErrorWindow);
+
+    wrapper.vm.$emit("message", "test message");
+
+    expect(wrapper.emitted().message).toBe("test message");
   });
 });
