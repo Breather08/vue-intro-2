@@ -15,7 +15,7 @@
 <script>
 import NoteItem from "@/components/NoteItem.vue";
 import NoteForm from "@/components/NoteForm.vue";
-import { eventBus } from "@/main";
+import { eventBus } from "@/eventBus";
 
 export default {
   data() {
@@ -29,11 +29,14 @@ export default {
     NoteForm
   },
   created() {
-    eventBus.$on("addNote", (newNote) => {
+    eventBus.$on("add-note", (newNote) => {
       this.notes.unshift(newNote);
     });
 
-    eventBus.$on("deleteNote", (filteredNotes) => (this.notes = filteredNotes));
+    eventBus.$on(
+      "delete-note",
+      (filteredNotes) => (this.notes = filteredNotes)
+    );
 
     eventBus.$on("api-id", (id) => (this.API_ID = id));
   }

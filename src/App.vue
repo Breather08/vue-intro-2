@@ -16,8 +16,8 @@
           />
         </filter>
       </svg>
+      <ErrorWindow />
     </v-main>
-    <ErrorWindow />
   </v-app>
 </template>
 

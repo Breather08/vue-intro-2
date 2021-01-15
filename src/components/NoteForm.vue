@@ -1,13 +1,19 @@
 <template>
   <div class="note-form">
     <v-card class="rounded-lg">
-      <input type="text" v-model="title" placeholder="Your title" />
-      <textarea v-model="textContent" placeholder="Your Content"></textarea>
+      <input type="text" v-model="noteData.title" placeholder="Your title" />
+      <textarea
+        v-model="noteData.textContent"
+        placeholder="Your Content"
+      ></textarea>
     </v-card>
     <div
       :class="{
         'add-note': true,
-        max: this.notes.length > 9 || title === '' || textContent === ''
+        max:
+          this.notes.length >= MAX_NOTES ||
+          noteData.title === '' ||
+          noteData.textContent === ''
       }"
       @click="clickAdd"
     >
@@ -17,7 +23,7 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
+import { eventBus } from "@/eventBus";
 import { editNote, getNotes, createNote } from "@/utils/API";
 
 export default {
@@ -29,45 +35,53 @@ export default {
   },
   data() {
     return {
-      id: 0,
-      title: "",
-      textContent: "",
+      noteData: {
+        id: 0,
+        title: "",
+        textContent: ""
+      },
       message: "",
-      API_ID: ""
+      API_ID: "",
+      MAX_NOTES: 10
     };
   },
   methods: {
     async clickAdd() {
-      if (this.title && this.textContent && this.notes.length < 10) {
-        this.id++;
-        if (this.notes.length === 0) {
-          await createNote([note]).then((resp) => (this.API_ID = resp));
-        }
+      if (
+        this.noteData.title !== "" &&
+        this.noteData.textContent !== "" &&
+        this.notes.length < this.MAX_NOTES
+      ) {
+        this.noteData.id++;
         this.message = "";
 
         const note = {
-          id: this.id,
-          title: this.title,
-          textContent: this.textContent
+          id: this.noteData.id,
+          title: this.noteData.title,
+          textContent: this.noteData.textContent
         };
 
-        this.title = "";
-        this.textContent = "";
+        this.noteData.title = "";
+        this.noteData.textContent = "";
 
-        eventBus.$emit("addNote", note);
-        eventBus.$emit("sendNotes", this.notes.length);
+        eventBus.$emit("add-note", note);
+        eventBus.$emit("send-notes", this.notes.length);
+
+        if (this.notes.length === 1) {
+          await createNote([note]).then((resp) => (this.API_ID = resp));
+        }
 
         await editNote([...this.notes], this.API_ID);
         await getNotes(this.API_ID);
         await eventBus.$emit("api-id", this.API_ID);
       } else {
-        if (!this.title || !this.textContent) {
+        if (!this.noteData.title || !this.noteData.textContent) {
           this.message = "No empty fields allowed";
-        } else if (this.notes.length === 10) {
+        } else if (this.notes.length === this.MAX_NOTES) {
           this.message = "Notes limit exceeded";
         }
+        eventBus.$emit("message", this.message);
       }
-      eventBus.$emit("message", this.message);
     }
   }
 };

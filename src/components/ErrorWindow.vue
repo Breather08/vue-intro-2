@@ -1,8 +1,7 @@
 <template>
   <v-card
     class="alert-msg"
-    :style="{ transform: `translate(${this.message ? show() : 320}px)` }"
-    ref="alert"
+    :style="{ transform: `translate(${this.active ? 0 : 350}px)` }"
   >
     <div class="warning-logo">
       <svg
@@ -42,25 +41,22 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
+import { eventBus } from "@/eventBus";
 
 export default {
   data() {
     return {
-      message: ""
+      message: "",
+      active: false
     };
-  },
-  methods: {
-    show() {
-      setTimeout(() => {
-        this.message = "";
-      }, 2000);
-      return 0;
-    }
   },
   created() {
     eventBus.$on("message", (msg) => {
       this.message = msg;
+      this.active = true;
+      setTimeout(() => {
+        this.active = false;
+      }, 2000);
     });
   }
 };
@@ -68,7 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 .alert-msg {
-  position: sticky;
+  position: fixed;
 
   width: 300px;
   height: 70px;
@@ -78,7 +74,7 @@ export default {
   margin: 20px;
 
   bottom: 5vh;
-  left: 100%;
+  left: calc(100vw - 350px);
   z-index: 50;
 
   border-radius: 7px;

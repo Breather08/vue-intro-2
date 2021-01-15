@@ -4,9 +4,12 @@ import vuetify from "./plugins/vuetify";
 
 Vue.config.productionTip = false;
 
-export const eventBus = new Vue();
-
 new Vue({
+  data() {
+    return {
+      MAX_NOTES: 10
+    };
+  },
   vuetify,
   render: (h) => h(App)
 }).$mount("#app");

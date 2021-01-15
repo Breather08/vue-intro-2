@@ -32,8 +32,8 @@ export const editNote = (editedNote, API_ID) =>
       throw err;
     });
 
-export const deleteNote = (id) =>
-  API.delete(`${URL}/${id}`)
+export const deleteNote = (API_ID) =>
+  API.delete(`${URL}/${API_ID}`)
     .then((resp) => resp.data)
     .catch((err) => {
       throw err;

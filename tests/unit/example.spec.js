@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import ErrorWindow from "@/components/ErrorWindow.vue";
 // import NoteForm from "@/components/NoteForm.vue";
 // import NoteItem from "@/components/NoteItem.vue";
@@ -7,10 +7,15 @@ import ErrorWindow from "@/components/ErrorWindow.vue";
 
 describe("ErrorWindow.vue", () => {
   it("shows the error window", () => {
-    const wrapper = shallowMount(ErrorWindow);
+    const wrapper = mount(ErrorWindow);
+
+    // expect(wrapper.)
 
     wrapper.vm.$emit("message", "test message");
 
-    expect(wrapper.emitted().message).toBe("test message");
+    console.log(mount(ErrorWindow).html());
+
+    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.emitted().message[0][0]).toBe("test message");
   });
 });

@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
+import { eventBus } from "@/eventBus";
 import { editNote, getNotes } from "@/utils/API";
 
 export default {
@@ -123,14 +123,18 @@ export default {
     async deleteNote() {
       this.isEditing = false;
       const filtered = this.notes.filter((note) => note.id !== this.info.id);
-      eventBus.$emit("deleteNote", filtered);
-      eventBus.$emit("sendNotes", this.notes.length - 1);
+
+      eventBus.$emit("delete-note", filtered);
+      eventBus.$emit("send-notes", this.notes.length - 1);
+
       if (filtered.length > 0) {
         await editNote(filtered, this.API_ID);
+      } else {
+        await editNote({ title: "Dummy API" }, this.API_ID);
       }
       await getNotes(this.API_ID);
     },
-    editNote() {
+    async editNote() {
       if (this.info.textContent !== "" && this.info.title !== "") {
         this.isEditing = !this.isEditing;
       } else {

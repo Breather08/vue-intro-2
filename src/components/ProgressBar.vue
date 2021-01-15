@@ -2,14 +2,14 @@
   <div class="progress">
     <div class="chart">
       <div
-        v-for="(circle, i) in 10"
+        v-for="(circle, i) in MAX_NOTES"
         :key="`circle-${i}`"
         :id="`circle-${i}`"
       ></div>
       <div
         class="main-circle"
         :style="{
-          transform: `translate(${amount * 10 - 45}vw)`
+          transform: `translate(${amount * MAX_NOTES - 45}vw)`
         }"
       ></div>
     </div>
@@ -17,16 +17,17 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
+import { eventBus } from "@/eventBus";
 
 export default {
   data() {
     return {
-      amount: -1
+      amount: -1,
+      MAX_NOTES: 10
     };
   },
   created() {
-    eventBus.$on("sendNotes", (data) => {
+    eventBus.$on("send-notes", (data) => {
       this.amount = data - 1;
     });
   }
