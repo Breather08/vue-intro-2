@@ -6,16 +6,15 @@ import ErrorWindow from "@/components/ErrorWindow.vue";
 // import ProgressBar from "@/components/ProgressBar.vue";
 
 describe("ErrorWindow.vue", () => {
+  const wrapper = mount(ErrorWindow);
   it("shows the error window", () => {
-    const wrapper = mount(ErrorWindow);
-
-    // expect(wrapper.)
-
-    wrapper.vm.$emit("message", "test message");
-
-    console.log(mount(ErrorWindow).html());
+    wrapper.setData({ active: false });
+    console.log(wrapper.element.style._values.transform);
+    wrapper.vm.$emit("show-message", "test message");
 
     expect(wrapper.exists()).toBe(true);
-    expect(wrapper.emitted().message[0][0]).toBe("test message");
+    expect(wrapper.element.style._values.transform).toEqual("translate(350px)");
+    expect(wrapper.emitted("show-message")[0]).toEqual(["test message"]);
+    expect(wrapper.vm.active).toBe(false);
   });
 });

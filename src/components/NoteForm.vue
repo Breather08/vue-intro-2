@@ -80,7 +80,7 @@ export default {
         } else if (this.notes.length === this.MAX_NOTES) {
           this.message = "Notes limit exceeded";
         }
-        eventBus.$emit("message", this.message);
+        eventBus.$emit("show-message", this.message);
       }
     }
   }

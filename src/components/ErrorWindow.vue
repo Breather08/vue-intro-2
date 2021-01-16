@@ -51,7 +51,7 @@ export default {
     };
   },
   created() {
-    eventBus.$on("message", (msg) => {
+    eventBus.$on("show-message", (msg) => {
       this.message = msg;
       this.active = true;
       setTimeout(() => {
