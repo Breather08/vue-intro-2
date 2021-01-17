@@ -49,7 +49,7 @@ export default {
 
 #app {
   position: relative;
-  background: #e8faff;
+  background: #f1f3f8;
   width: 100vw;
   overflow: hidden;
 }

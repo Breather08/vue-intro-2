@@ -17,7 +17,7 @@
       }"
       @click="clickAdd"
     >
-      <span>add</span>
+      <button>add</button>
     </div>
   </div>
 </template>
@@ -88,43 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$transitionDuration: 0.5s;
-
-@mixin addButton($color) {
-  width: 36px;
-  height: 72px;
-
-  position: relative;
-  display: flex;
-  align-items: center;
-  transform: translateY(18px);
-  background: $color;
-  border-radius: 0px 15px 15px 0px;
-
-  transition: $transitionDuration;
-
-  cursor: pointer;
-
-  span {
-    transform: rotate(-90deg);
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    width: 15px;
-    height: 72px;
-    background: $color;
-    z-index: -10;
-    transform: translate(-10px);
-    transition: $transitionDuration;
-  }
-
-  &:hover {
-    transform: translate(5px, 18px);
-  }
-}
-
 .note-form {
   position: relative;
   display: flex;
@@ -156,7 +119,38 @@ $transitionDuration: 0.5s;
     }
   }
   .add-note {
-    @include addButton(#84e0a9);
+    width: 36px;
+    height: 72px;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    transform: translateY(18px);
+    background: #84e0a9;
+    border-radius: 0px 15px 15px 0px;
+
+    transition: 0.5s;
+
+    cursor: pointer;
+
+    button {
+      transform: rotate(-90deg);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 72px;
+      background: #84e0a9;
+      z-index: -10;
+      transform: translate(-10px);
+      transition: 0.5s;
+    }
+
+    &:hover {
+      transform: translate(5px, 18px);
+    }
     &.max {
       filter: grayscale(100%);
     }

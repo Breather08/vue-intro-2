@@ -27,7 +27,7 @@
       ></textarea>
     </v-card>
     <div class="side-options">
-      <div class="edit" @click="editNote">
+      <button class="edit" @click="editNote">
         <svg
           :class="['pencil', isEditing ? 'animate' : '']"
           width="15"
@@ -58,8 +58,8 @@
             stroke="black"
           />
         </svg>
-      </div>
-      <div class="delete" @click="deleteNote">
+      </button>
+      <button class="delete" @click="deleteNote">
         <svg
           class="destroy"
           width="15"
@@ -90,7 +90,7 @@
             stroke-linejoin="round"
           />
         </svg>
-      </div>
+      </button>
     </div>
   </div>
 </template>

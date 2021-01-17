@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    class="alert-msg"
-    :style="{ transform: `translate(${this.active ? 0 : 350}px)` }"
-  >
+  <v-card :class="{ 'alert-msg': true, active: this.active }">
     <div class="warning-logo">
       <svg
         width="37"
@@ -74,7 +71,7 @@ export default {
   margin: 20px;
 
   bottom: 5vh;
-  left: calc(100vw - 350px);
+  left: calc(100vw);
   z-index: 50;
 
   border-radius: 7px;
@@ -89,6 +86,10 @@ export default {
   }
   .warning-msg {
     user-select: none;
+  }
+
+  &.active {
+    transform: translate(-350px);
   }
 }
 </style>
