@@ -47,14 +47,19 @@ export default {
       active: false
     };
   },
+  methods: {
+    showMessage() {
+      eventBus.$on("show-message", (msg) => {
+        this.message = msg;
+        this.active = true;
+        setTimeout(() => {
+          this.active = false;
+        }, 2000);
+      });
+    }
+  },
   created() {
-    eventBus.$on("show-message", (msg) => {
-      this.message = msg;
-      this.active = true;
-      setTimeout(() => {
-        this.active = false;
-      }, 2000);
-    });
+    this.showMessage();
   }
 };
 </script>

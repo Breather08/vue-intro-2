@@ -33,9 +33,7 @@ export default {
     NoteList,
     ProgressBar,
     ErrorWindow
-  },
-
-  data: () => ({})
+  }
 };
 </script>
 

@@ -116,7 +116,8 @@ export default {
   },
   data() {
     return {
-      isEditing: false
+      isEditing: false,
+      message: ""
     };
   },
   methods: {
@@ -136,9 +137,11 @@ export default {
     },
     async editNote() {
       if (this.info.textContent !== "" && this.info.title !== "") {
+        this.message = "";
         this.isEditing = !this.isEditing;
       } else {
-        eventBus.$emit("message", "No empty fields allowed!");
+        this.message = "No empty fields allowed";
+        eventBus.$emit("show-message", this.message);
       }
     }
   }
@@ -159,6 +162,7 @@ export default {
   border-radius: 0px #{$topRight}px #{$botRight}px 0px;
 
   transition: 0.5s;
+  outline: none;
 
   cursor: pointer;
 

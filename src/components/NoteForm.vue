@@ -46,23 +46,39 @@ export default {
     };
   },
   methods: {
-    async clickAdd() {
-      if (
+    isClickable() {
+      return (
         this.noteData.title !== "" &&
         this.noteData.textContent !== "" &&
         this.notes.length < this.MAX_NOTES
-      ) {
-        this.noteData.id++;
-        this.message = "";
+      );
+    },
+    createNote() {
+      this.noteData.id++;
+      this.message = "";
 
-        const note = {
-          id: this.noteData.id,
-          title: this.noteData.title,
-          textContent: this.noteData.textContent
-        };
+      const note = {
+        id: this.noteData.id,
+        title: this.noteData.title,
+        textContent: this.noteData.textContent
+      };
 
-        this.noteData.title = "";
-        this.noteData.textContent = "";
+      this.noteData.title = "";
+      this.noteData.textContent = "";
+
+      return note;
+    },
+    sendMessage() {
+      if (!this.noteData.title || !this.noteData.textContent) {
+        this.message = "No empty fields allowed";
+      } else if (this.notes.length === this.MAX_NOTES) {
+        this.message = "Notes limit exceeded";
+      }
+      eventBus.$emit("show-message", this.message);
+    },
+    async clickAdd() {
+      if (this.isClickable()) {
+        const note = this.createNote();
 
         eventBus.$emit("add-note", note);
         eventBus.$emit("send-notes", this.notes.length);
@@ -75,12 +91,7 @@ export default {
         await getNotes(this.API_ID);
         await eventBus.$emit("api-id", this.API_ID);
       } else {
-        if (!this.noteData.title || !this.noteData.textContent) {
-          this.message = "No empty fields allowed";
-        } else if (this.notes.length === this.MAX_NOTES) {
-          this.message = "Notes limit exceeded";
-        }
-        eventBus.$emit("show-message", this.message);
+        this.sendMessage();
       }
     }
   }
@@ -135,6 +146,7 @@ export default {
 
     button {
       transform: rotate(-90deg);
+      outline: none;
     }
 
     &::before {
