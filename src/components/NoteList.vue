@@ -1,5 +1,6 @@
 <template>
-  <div class="note-list">
+  <div class="loading" v-if="isLoading">LOADING...</div>
+  <div class="note-list" v-else>
     <NoteForm :notes="notes" />
 
     <NoteItem
@@ -7,7 +8,6 @@
       :key="index"
       :info="note"
       :notes="notes"
-      :API_ID="API_ID"
     />
   </div>
 </template>
@@ -15,30 +15,49 @@
 <script>
 import NoteItem from "@/components/NoteItem.vue";
 import NoteForm from "@/components/NoteForm.vue";
-import { eventBus } from "@/eventBus";
+import { eventBus } from "@/global/eventBus";
+import { getNotes, updateNotes, clearAPI } from "@/utils/API";
 
 export default {
   data() {
     return {
       notes: [],
-      API_ID: ""
+      api_key: localStorage.getItem("api_key"),
+      isLoading: true
     };
   },
   components: {
     NoteItem,
     NoteForm
   },
-  created() {
-    eventBus.$on("add-note", (newNote) => {
-      this.notes.unshift(newNote);
+  async created() {
+    if (this.api_key) {
+      await getNotes(this.api_key).then((resp) => {
+        this.notes = resp.data;
+        this.isLoading = false;
+      });
+    } else {
+      this.isLoading = false;
+    }
+
+    eventBus.$on("add-note", async (newNote) => {
+      const currentAPI = localStorage.getItem("api_key");
+      await updateNotes([newNote, ...this.notes], currentAPI);
+      await this.notes.unshift(newNote);
+      await eventBus.$emit("send-notes", this.notes.length - 1);
     });
 
-    eventBus.$on(
-      "delete-note",
-      (filteredNotes) => (this.notes = filteredNotes)
-    );
-
-    eventBus.$on("api-id", (id) => (this.API_ID = id));
+    eventBus.$on("delete-note", async (id) => {
+      const filtered = this.notes.filter((note) => note.id !== id);
+      const currentAPI = localStorage.getItem("api_key");
+      if (filtered.length === 0) {
+        await clearAPI(currentAPI);
+      } else {
+        await updateNotes([...filtered], currentAPI);
+      }
+      this.notes = filtered;
+      await eventBus.$emit("send-notes", this.notes.length - 1);
+    });
   }
 };
 </script>
@@ -53,5 +72,12 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 20px;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

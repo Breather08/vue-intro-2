@@ -17,18 +17,25 @@
 </template>
 
 <script>
-import { eventBus } from "@/eventBus";
+import { eventBus } from "@/global/eventBus";
+import { getNotes } from "@/utils/API";
 
 export default {
   data() {
     return {
       amount: -1,
-      MAX_NOTES: 10
+      MAX_NOTES: 10,
+      api_key: localStorage.getItem("api_key")
     };
   },
-  created() {
+  async created() {
+    if (this.api_key) {
+      await getNotes(this.api_key).then((resp) => {
+        this.amount = resp.data.length - 1;
+      });
+    }
     eventBus.$on("send-notes", (data) => {
-      this.amount = data - 1;
+      this.amount = data;
     });
   }
 };

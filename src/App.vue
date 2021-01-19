@@ -3,20 +3,8 @@
     <v-main>
       <ProgressBar />
       <NoteList />
-      <svg>
-        <filter id="gooey">
-          <feGaussianBlur in="SourceGrafic" stdDeviation="10" />
-          <feColorMatrix
-            values="
-        1 0 0 0 0
-        0 1 0 0 0
-        0 0 1 0 0
-        0 0 0 20 -10
-        "
-          />
-        </filter>
-      </svg>
       <ErrorWindow />
+      <SvgFilters :name="'gooey'" />
     </v-main>
   </v-app>
 </template>
@@ -25,6 +13,7 @@
 import NoteList from "@/components/NoteList.vue";
 import ProgressBar from "@/components/ProgressBar.vue";
 import ErrorWindow from "@/components/ErrorWindow.vue";
+import SvgFilters from "@/components/SvgFilters.vue";
 
 export default {
   name: "App",
@@ -32,7 +21,8 @@ export default {
   components: {
     NoteList,
     ProgressBar,
-    ErrorWindow
+    ErrorWindow,
+    SvgFilters
   }
 };
 </script>

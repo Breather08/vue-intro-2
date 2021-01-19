@@ -11,7 +11,7 @@
       :class="{
         'add-note': true,
         max:
-          this.notes.length >= MAX_NOTES ||
+          this.notes.length >= max_notes ||
           noteData.title === '' ||
           noteData.textContent === ''
       }"
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { eventBus } from "@/eventBus";
-import { editNote, getNotes, createNote } from "@/utils/API";
+import { eventBus } from "@/global/eventBus";
+import { createNote } from "@/utils/API";
 
 export default {
   props: {
@@ -36,13 +36,13 @@ export default {
   data() {
     return {
       noteData: {
-        id: 0,
+        id: "",
         title: "",
         textContent: ""
       },
       message: "",
-      API_ID: "",
-      MAX_NOTES: 10
+      api_key: localStorage.getItem("api_key"),
+      max_notes: 10
     };
   },
   methods: {
@@ -50,15 +50,19 @@ export default {
       return (
         this.noteData.title !== "" &&
         this.noteData.textContent !== "" &&
-        this.notes.length < this.MAX_NOTES
+        this.notes.length < this.max_notes
       );
     },
+    randomID() {
+      return Math.random()
+        .toString(36)
+        .substr(2, 9);
+    },
     createNote() {
-      this.noteData.id++;
       this.message = "";
 
       const note = {
-        id: this.noteData.id,
+        id: this.randomID(),
         title: this.noteData.title,
         textContent: this.noteData.textContent
       };
@@ -71,8 +75,10 @@ export default {
     sendMessage() {
       if (!this.noteData.title || !this.noteData.textContent) {
         this.message = "No empty fields allowed";
-      } else if (this.notes.length === this.MAX_NOTES) {
+      } else if (this.notes.length === this.max_notes) {
         this.message = "Notes limit exceeded";
+      } else {
+        this.clickAdd();
       }
       eventBus.$emit("show-message", this.message);
     },
@@ -80,16 +86,16 @@ export default {
       if (this.isClickable()) {
         const note = this.createNote();
 
-        eventBus.$emit("add-note", note);
-        eventBus.$emit("send-notes", this.notes.length);
-
-        if (this.notes.length === 1) {
-          await createNote([note]).then((resp) => (this.API_ID = resp));
+        if (this.notes.length === 0 || !this.api_key) {
+          await createNote([note]).then((resp) => {
+            localStorage.setItem("api_key", resp);
+            this.api_key = resp;
+          });
+          await this.notes.unshift(note);
+          await eventBus.$emit("send-notes", 0);
+        } else {
+          await eventBus.$emit("add-note", note);
         }
-
-        await editNote([...this.notes], this.API_ID);
-        await getNotes(this.API_ID);
-        await eventBus.$emit("api-id", this.API_ID);
       } else {
         this.sendMessage();
       }

@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import ErrorWindow from "@/components/ErrorWindow.vue";
-import { eventBus } from "@/eventBus";
+import { eventBus } from "@/global/eventBus";
 
 const message = "Some error";
 
@@ -34,9 +34,7 @@ describe("ErrorWindow.vue", () => {
 
     const testMsg = "Test message";
     eventBus.$emit("show-message", testMsg);
-    wrapper.vm.showMessage();
     expect(wrapper.vm.message).toEqual(testMsg);
-
     expect(wrapper.vm.active).toBeTruthy();
     setTimeout(() => {
       expect(wrapper.vm.active).toBeFalsy();
