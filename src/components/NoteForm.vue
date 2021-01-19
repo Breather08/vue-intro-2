@@ -74,8 +74,6 @@ export default {
         this.message = "No empty fields allowed";
       } else if (this.notes.length === this.max_notes) {
         this.message = "Notes limit exceeded";
-      } else {
-        this.clickAdd();
       }
       eventBus.$emit("show-message", this.message);
     },
@@ -84,9 +82,8 @@ export default {
         const note = this.createNote();
 
         if (this.notes.length === 0) {
-          await createNote([note]).then((resp) => {
-            localStorage.setItem("api_key", resp);
-          });
+          const api_key = await createNote([note]);
+          localStorage.setItem("api_key", api_key);
           await this.notes.unshift(note);
           await eventBus.$emit("send-notes", 0);
         } else {

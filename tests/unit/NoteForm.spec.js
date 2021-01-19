@@ -1,5 +1,7 @@
 import { mount } from "@vue/test-utils";
 import NoteForm from "@/components/NoteForm.vue";
+import { createNote } from "@/utils/API";
+import flushPromises from "flush-promises";
 
 const message = "Some error";
 const componentData = {
@@ -13,9 +15,17 @@ const componentData = {
   MAX_NOTES: 10
 };
 
+jest.mock("@/utils/API");
+
 describe("NoteForm.vue", () => {
   let wrapper;
   beforeEach(() => {
+    const mockTitle = "Some title";
+    const mockContent = "Some content";
+    createNote.mockResolvedValueOnce({
+      title: mockTitle,
+      textContent: mockContent
+    });
     wrapper = mount(NoteForm, {
       propsData: {
         notes: []
@@ -25,6 +35,10 @@ describe("NoteForm.vue", () => {
       }
     });
   });
+
+  const clickAdd = () => {
+    wrapper.find(".add-note").trigger("click");
+  };
 
   it("should initialize correctly", () => {
     expect(wrapper.is(NoteForm)).toBeTruthy();
@@ -41,19 +55,32 @@ describe("NoteForm.vue", () => {
 
   it("should check for errors", () => {
     const dummyData = { ...componentData };
-    wrapper.vm.clickAdd();
+    clickAdd();
     expect(wrapper.vm.message).toEqual("No empty fields allowed");
 
-    wrapper.setProps({ notes: Array(10) });
-    dummyData.noteData.title = "Smth";
     dummyData.noteData.textContent = "Smth";
+    dummyData.noteData.title = "Smth";
     wrapper.setData(dummyData);
-    wrapper.vm.clickAdd();
-    expect(wrapper.vm.message).toEqual("Notes limit exceeded");
+    clickAdd();
+    expect(wrapper.vm.message).toEqual("");
 
-    // setProps does not work here, so:
-    // wrapper.vm.notes = [];
-    // wrapper.vm.clickAdd();
-    // expect(wrapper.vm.message).toEqual("");
+    dummyData.noteData.textContent = "Smth";
+    dummyData.noteData.title = "Smth";
+    wrapper.setData(dummyData);
+    wrapper.setProps({ notes: Array(10) });
+    clickAdd();
+    expect(wrapper.vm.message).toEqual("Notes limit exceeded");
+  });
+
+  it("should correctly work with API", async () => {
+    await flushPromises();
+    expect(createNote).toHaveBeenCalledTimes(1);
+    console.log(localStorage.getItem("api_key"));
+  });
+
+  it("should display throw error when createNote fails", async () => {
+    const mockError = "Some error";
+    createNote.mockResolvedValueOnce(mockError);
+    expect(createNote).toHaveBeenCalledTimes(1);
   });
 });

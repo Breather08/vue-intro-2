@@ -69,7 +69,7 @@ export default {
         );
 
         if (this.isEditing) {
-          await updateNotes(edited, localStorage.getItem("api_key"));
+          await updateNotes(edited);
         }
         this.isEditing = !this.isEditing;
       } else {
