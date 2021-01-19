@@ -24,13 +24,12 @@ export default {
   data() {
     return {
       amount: -1,
-      MAX_NOTES: 10,
-      api_key: localStorage.getItem("api_key")
+      MAX_NOTES: 10
     };
   },
   async created() {
-    if (this.api_key) {
-      await getNotes(this.api_key).then((resp) => {
+    if (localStorage.getItem("api_key")) {
+      await getNotes().then((resp) => {
         this.amount = resp.data.length - 1;
       });
     }

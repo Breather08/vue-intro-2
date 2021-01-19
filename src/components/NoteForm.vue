@@ -10,10 +10,7 @@
     <div
       :class="{
         'add-note': true,
-        max:
-          this.notes.length >= max_notes ||
-          noteData.title === '' ||
-          noteData.textContent === ''
+        clickable: isClickable()
       }"
       @click="clickAdd"
     >
@@ -86,10 +83,9 @@ export default {
       if (this.isClickable()) {
         const note = this.createNote();
 
-        if (this.notes.length === 0 || !this.api_key) {
+        if (this.notes.length === 0) {
           await createNote([note]).then((resp) => {
             localStorage.setItem("api_key", resp);
-            this.api_key = resp;
           });
           await this.notes.unshift(note);
           await eventBus.$emit("send-notes", 0);
@@ -169,7 +165,7 @@ export default {
     &:hover {
       transform: translate(5px, 18px);
     }
-    &.max {
+    &:not(.clickable) {
       filter: grayscale(100%);
     }
     span {

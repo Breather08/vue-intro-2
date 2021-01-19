@@ -58,14 +58,16 @@ export default {
     async editNote() {
       if (this.info.textContent && this.info.title) {
         this.message = "";
-        // add data to API
+
         const currentNote = {
           title: this.info.title,
           textContent: this.info.textContent
         };
+
         const edited = this.notes.map((note) =>
           note.id !== this.info.id ? note : currentNote
         );
+
         if (this.isEditing) {
           await updateNotes(edited, localStorage.getItem("api_key"));
         }

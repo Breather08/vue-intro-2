@@ -22,7 +22,6 @@ export default {
   data() {
     return {
       notes: [],
-      api_key: localStorage.getItem("api_key"),
       isLoading: true
     };
   },
@@ -31,8 +30,8 @@ export default {
     NoteForm
   },
   async created() {
-    if (this.api_key) {
-      await getNotes(this.api_key).then((resp) => {
+    if (localStorage.getItem("api_key")) {
+      await getNotes().then((resp) => {
         this.notes = resp.data;
         this.isLoading = false;
       });
@@ -41,19 +40,17 @@ export default {
     }
 
     eventBus.$on("add-note", async (newNote) => {
-      const currentAPI = localStorage.getItem("api_key");
-      await updateNotes([newNote, ...this.notes], currentAPI);
+      await updateNotes([newNote, ...this.notes]);
       await this.notes.unshift(newNote);
       await eventBus.$emit("send-notes", this.notes.length - 1);
     });
 
     eventBus.$on("delete-note", async (id) => {
       const filtered = this.notes.filter((note) => note.id !== id);
-      const currentAPI = localStorage.getItem("api_key");
       if (filtered.length === 0) {
-        await clearAPI(currentAPI);
+        await clearAPI();
       } else {
-        await updateNotes([...filtered], currentAPI);
+        await updateNotes([...filtered]);
       }
       this.notes = filtered;
       await eventBus.$emit("send-notes", this.notes.length - 1);
