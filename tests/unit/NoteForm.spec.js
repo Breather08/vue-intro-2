@@ -1,7 +1,6 @@
 import { mount } from "@vue/test-utils";
 import NoteForm from "@/components/NoteForm.vue";
 import { createNote } from "@/utils/API";
-import flushPromises from "flush-promises";
 
 const message = "Some error";
 const componentData = {
@@ -20,12 +19,6 @@ jest.mock("@/utils/API");
 describe("NoteForm.vue", () => {
   let wrapper;
   beforeEach(() => {
-    const mockTitle = "Some title";
-    const mockContent = "Some content";
-    createNote.mockResolvedValueOnce({
-      title: mockTitle,
-      textContent: mockContent
-    });
     wrapper = mount(NoteForm, {
       propsData: {
         notes: []
@@ -73,12 +66,10 @@ describe("NoteForm.vue", () => {
   });
 
   it("should correctly work with API", async () => {
-    await flushPromises();
     expect(createNote).toHaveBeenCalledTimes(1);
-    console.log(localStorage.getItem("api_key"));
   });
 
-  it("should display throw error when createNote fails", async () => {
+  it("should throw error when createNote fails", async () => {
     const mockError = "Some error";
     createNote.mockResolvedValueOnce(mockError);
     expect(createNote).toHaveBeenCalledTimes(1);

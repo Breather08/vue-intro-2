@@ -1,5 +1,12 @@
 <template>
-  <div class="loading" v-if="isLoading">LOADING...</div>
+  <div class="loading" v-if="isLoading">
+    <div
+      v-for="(block, index) in 4"
+      class="loading-block"
+      :id="`block-${index}`"
+      :key="`block-${index}`"
+    ></div>
+  </div>
   <div class="note-list" v-else>
     <NoteForm :notes="notes" />
 
@@ -16,7 +23,7 @@
 import NoteItem from "@/components/NoteItem.vue";
 import NoteForm from "@/components/NoteForm.vue";
 import { eventBus } from "@/global/eventBus";
-import { getNotes, updateNotes } from "@/utils/API";
+import { getNotes, updateNotes, createAPI } from "@/utils/API";
 
 export default {
   data() {
@@ -33,9 +40,18 @@ export default {
     if (localStorage.getItem("api_key")) {
       await getNotes().then((resp) => {
         this.notes = resp.data.notes;
-        this.isLoading = false;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
       });
+      await eventBus.$emit("send-notes", this.notes.length - 1);
     } else {
+      const api_key = await createAPI({
+        notes: [],
+        notes_max: 10,
+        api_key: "pending"
+      });
+      localStorage.setItem("api_key", api_key);
       this.isLoading = false;
     }
 
@@ -80,5 +96,29 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70px;
+  height: 100px;
+
+  @for $i from 0 through 4 {
+    #block-#{$i} {
+      width: 10px;
+      height: 30px;
+      border-radius: 10px;
+      background: #394867;
+      animation: up-down 0.6s infinite #{0.1 * $i}s ease-in-out;
+    }
+  }
+}
+
+@keyframes up-down {
+  50% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>

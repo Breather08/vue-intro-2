@@ -76,6 +76,7 @@ export default {
             api_key: localStorage.getItem("api_key")
           });
         }
+
         this.isEditing = !this.isEditing;
       } else {
         this.message = "No empty fields allowed";

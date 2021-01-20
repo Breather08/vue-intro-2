@@ -29,10 +29,3 @@ export const updateNotes = (editedNote) =>
     .catch((err) => {
       throw err;
     });
-
-export const clearAPI = () =>
-  API.delete(`${URL}/${API_KEY()}`)
-    .then((resp) => resp.data)
-    .catch((err) => {
-      throw err;
-    });

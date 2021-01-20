@@ -21,7 +21,6 @@
 
 <script>
 import { eventBus } from "@/global/eventBus";
-import { createAPI } from "@/utils/API";
 
 export default {
   props: {
@@ -79,21 +78,7 @@ export default {
     async clickAdd() {
       if (this.isClickable()) {
         const note = this.createNote();
-        console.log(localStorage.getItem("api_key"));
-        if (!localStorage.getItem("api_key")) {
-          console.log("creating new api_key");
-          const api_key = await createAPI({
-            notes: [note],
-            notes_max: 10,
-            api_key: "pending"
-          });
-          localStorage.setItem("api_key", api_key);
-          await this.notes.unshift(note);
-          await eventBus.$emit("send-notes", 0);
-        } else {
-          console.log("adding note with put");
-          await eventBus.$emit("add-note", note);
-        }
+        await eventBus.$emit("add-note", note);
       } else {
         this.sendMessage();
       }
