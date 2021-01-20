@@ -16,7 +16,7 @@
 import NoteItem from "@/components/NoteItem.vue";
 import NoteForm from "@/components/NoteForm.vue";
 import { eventBus } from "@/global/eventBus";
-import { getNotes, updateNotes, clearAPI } from "@/utils/API";
+import { getNotes, updateNotes } from "@/utils/API";
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
   async created() {
     if (localStorage.getItem("api_key")) {
       await getNotes().then((resp) => {
-        this.notes = resp.data;
+        this.notes = resp.data.notes;
         this.isLoading = false;
       });
     } else {
@@ -40,18 +40,22 @@ export default {
     }
 
     eventBus.$on("add-note", async (newNote) => {
-      await updateNotes([newNote, ...this.notes]);
+      await updateNotes({
+        notes: [newNote, ...this.notes],
+        notes_max: 10,
+        api_key: localStorage.getItem("api_key")
+      });
       await this.notes.unshift(newNote);
       await eventBus.$emit("send-notes", this.notes.length - 1);
     });
 
     eventBus.$on("delete-note", async (id) => {
       const filtered = this.notes.filter((note) => note.id !== id);
-      if (filtered.length === 0) {
-        await clearAPI();
-      } else {
-        await updateNotes([...filtered]);
-      }
+      await updateNotes({
+        notes: [...filtered],
+        notes_max: 10,
+        api_key: localStorage.getItem("api_key")
+      });
       this.notes = filtered;
       await eventBus.$emit("send-notes", this.notes.length - 1);
     });

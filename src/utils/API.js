@@ -16,7 +16,7 @@ export const getNotes = () =>
     throw err;
   });
 
-export const createNote = (note) =>
+export const createAPI = (note) =>
   API.post(URL, note)
     .then((resp) => resp.data.id)
     .catch((err) => {

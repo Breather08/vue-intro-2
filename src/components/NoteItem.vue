@@ -60,6 +60,7 @@ export default {
         this.message = "";
 
         const currentNote = {
+          id: this.info.id,
           title: this.info.title,
           textContent: this.info.textContent
         };
@@ -69,7 +70,11 @@ export default {
         );
 
         if (this.isEditing) {
-          await updateNotes(edited);
+          await updateNotes({
+            notes: edited,
+            notes_max: 10,
+            api_key: localStorage.getItem("api_key")
+          });
         }
         this.isEditing = !this.isEditing;
       } else {
