@@ -44,7 +44,7 @@ export default {
           this.isLoading = false;
         }, 500);
       });
-      await eventBus.$emit("send-notes", this.notes.length - 1);
+      eventBus.$emit("send-notes", this.notes.length - 1);
     } else {
       const api_key = await createAPI({
         notes: [],
@@ -61,8 +61,8 @@ export default {
         notes_max: 10,
         api_key: localStorage.getItem("api_key")
       });
-      await this.notes.unshift(newNote);
-      await eventBus.$emit("send-notes", this.notes.length - 1);
+      this.notes.unshift(newNote);
+      eventBus.$emit("send-notes", this.notes.length - 1);
     });
 
     eventBus.$on("delete-note", async (id) => {
@@ -73,7 +73,7 @@ export default {
         api_key: localStorage.getItem("api_key")
       });
       this.notes = filtered;
-      await eventBus.$emit("send-notes", this.notes.length - 1);
+      eventBus.$emit("send-notes", this.notes.length - 1);
     });
   }
 };

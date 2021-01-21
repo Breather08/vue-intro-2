@@ -75,10 +75,10 @@ export default {
       }
       eventBus.$emit("show-message", this.message);
     },
-    async clickAdd() {
+    clickAdd() {
       if (this.isClickable()) {
         const note = this.createNote();
-        await eventBus.$emit("add-note", note);
+        eventBus.$emit("add-note", note);
       } else {
         this.sendMessage();
       }
