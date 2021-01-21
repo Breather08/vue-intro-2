@@ -5,8 +5,6 @@ import { updateNotes } from "@/utils/API";
 const message = "Some error";
 jest.mock("../../src/utils/API");
 
-// const mockUpdateNotes = jest.fn(() => Promise.resolve(55));
-
 describe("NoteItem.vue", () => {
   let wrapper;
   beforeEach(() => {
@@ -42,7 +40,9 @@ describe("NoteItem.vue", () => {
         };
       }
     });
-    wrapper.vm.deleteNote = jest.fn();
+    updateNotes.mockImplementation(() =>
+      Promise.resolve({ title: "Test title", content: "Test content" })
+    );
   });
 
   const clickEdit = () => {
@@ -76,7 +76,28 @@ describe("NoteItem.vue", () => {
     expect(wrapper.vm._data.isEditing).toBeFalsy();
   });
 
-  it("should trigger edit button", () => {
-    // console.log(mockUpdateNotes());
+  it("should trigger edit button", async () => {
+    expect(wrapper.vm._data.isEditing).toBeFalsy();
+    await clickEdit();
+    expect(wrapper.vm._data.isEditing).toBeTruthy();
+    await clickEdit();
+    expect(wrapper.vm._data.message).toEqual("");
+    expect(wrapper.vm._data.isEditing).toBeFalsy();
+    await updateNotes().then((resp) => {
+      expect(resp.title).toEqual("Test title");
+    });
+    expect(updateNotes).toHaveBeenCalled();
+  });
+
+  it("should send error message", () => {
+    wrapper.setProps({
+      info: {
+        id: 0,
+        title: "",
+        textContent: ""
+      }
+    });
+    clickEdit();
+    expect(wrapper.vm._data.message).toEqual("No empty fields allowed");
   });
 });

@@ -15,11 +15,11 @@
     </v-card>
     <div class="side-options">
       <button class="edit" @click="editNote">
-        <Icons :icon="'pencil'" :isEditing="isEditing" />
-        <Icons :icon="'stroke'" :isEditing="isEditing" />
+        <PencilIcon :isEditing="isEditing" />
+        <StrokeIcon :isEditing="isEditing" />
       </button>
       <button class="delete" @click="deleteNote">
-        <Icons :icon="'delete'" />
+        <DeleteIcon />
       </button>
     </div>
   </div>
@@ -28,7 +28,9 @@
 <script>
 import { eventBus } from "@/global/eventBus";
 import { updateNotes } from "@/utils/API";
-import Icons from "@/components/Icons.vue";
+import PencilIcon from "@/components/Icons/PencilIcon.vue";
+import StrokeIcon from "@/components/Icons/StrokeIcon.vue";
+import DeleteIcon from "@/components/Icons/DeleteIcon.vue";
 
 export default {
   props: {
@@ -48,7 +50,9 @@ export default {
     };
   },
   components: {
-    Icons
+    DeleteIcon,
+    StrokeIcon,
+    PencilIcon
   },
   methods: {
     deleteNote() {

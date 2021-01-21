@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/ErrorWindow.vue</title>
+    <title>Code coverage report for components/ProgressBar.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -18,13 +18,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ErrorWindow.vue</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">components</a> ProgressBar.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -38,14 +38,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -127,7 +127,24 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,7 +157,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,14 +166,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -199,73 +219,83 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;v-card :class="{ 'alert-msg': true, active: this.active }"&gt;
-    &lt;div class="warning-logo"&gt;
-      &lt;WarningIcon /&gt;
+  &lt;div class="progress"&gt;
+    &lt;div class="chart"&gt;
+      &lt;div
+        v-for="(circle, i) in MAX_NOTES"
+        :key="`circle-${i}`"
+        :id="`circle-${i}`"
+      &gt;&lt;/div&gt;
+      &lt;div
+        class="main-circle"
+        :style="{
+          transform: `translate(${amount * MAX_NOTES - 45}vw)`
+        }"
+      &gt;&lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class="warning-msg"&gt;
-      &lt;span&gt;{{ this.message }}&lt;/span&gt;
-    &lt;/div&gt;
-  &lt;/v-card&gt;
+  &lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
 import { eventBus } from "@/global/eventBus";
-import WarningIcon from "@/components/Icons/WarningIcon.vue";
 &nbsp;
 export default {
   data() {
     return {
-      message: "",
-      active: false
+      amount: -1,
+      MAX_NOTES: 10
     };
   },
-  components: {
-    WarningIcon
-  },
-  created() {
-    eventBus.$on("show-message", (msg) =&gt; {
-      this.message = msg;
-      this.active = true;
-      setTimeout(() =&gt; {
-        this.active = false;
-      }, 2000);
+  async created() {
+    eventBus.$on("send-notes", (data) =&gt; {
+      this.amount = data;
     });
   }
 };
 &lt;/script&gt;
 &nbsp;
 &lt;style lang="scss" scoped&gt;
-.alert-msg {
-  position: fixed;
+$circle-radius: 3vw;
 &nbsp;
-  width: 300px;
-  height: 70px;
-&nbsp;
+.progress {
+  position: relative;
+  width: 100vw;
+  height: 150px;
   display: flex;
   align-items: center;
-  margin: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  .chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    @for $i from 0 through 10 {
+      #circle-#{$i} {
+        position: absolute;
 &nbsp;
-  bottom: 5vh;
-  left: calc(100vw);
-  z-index: 50;
+        width: #{$circle-radius};
+        height: #{$circle-radius};
 &nbsp;
-  border-radius: 7px;
-  background: #e1cb7e;
+        transform: translate($i * 10vw - 45vw);
 &nbsp;
-  transition: 0.2s ease-out;
-  .warning-logo {
-    position: relative;
-    margin: 20px;
+        background: #d6e0f0;
+        border-radius: 50%;
+      }
+    }
 &nbsp;
-    height: 37px;
-  }
-  .warning-msg {
-    user-select: none;
-  }
+    .main-circle {
+      position: absolute;
 &nbsp;
-  &amp;.active {
-    transform: translate(-350px);
+      width: #{$circle-radius};
+      height: #{$circle-radius};
+&nbsp;
+      background: #84e0a9;
+      border-radius: 50%;
+&nbsp;
+      transition: 1s ease-out;
+    }
+&nbsp;
+    filter: url(#gooey);
   }
 }
 &lt;/style&gt;

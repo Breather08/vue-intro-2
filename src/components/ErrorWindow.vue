@@ -1,7 +1,7 @@
 <template>
   <v-card :class="{ 'alert-msg': true, active: this.active }">
     <div class="warning-logo">
-      <Icons :icon="'warning'" />
+      <WarningIcon />
     </div>
     <div class="warning-msg">
       <span>{{ this.message }}</span>
@@ -11,7 +11,7 @@
 
 <script>
 import { eventBus } from "@/global/eventBus";
-import Icons from "@/components/Icons.vue";
+import WarningIcon from "@/components/Icons/WarningIcon.vue";
 
 export default {
   data() {
@@ -21,7 +21,7 @@ export default {
     };
   },
   components: {
-    Icons
+    WarningIcon
   },
   created() {
     eventBus.$on("show-message", (msg) => {

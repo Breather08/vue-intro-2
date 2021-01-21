@@ -36,15 +36,18 @@ export default {
     NoteItem,
     NoteForm
   },
-  async created() {
-    if (localStorage.getItem("api_key")) {
+  methods: {
+    async mountAPI() {
       await getNotes().then((resp) => {
         this.notes = resp.data.notes;
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
+        this.isLoading = false;
       });
       eventBus.$emit("send-notes", this.notes.length - 1);
+    }
+  },
+  async created() {
+    if (localStorage.getItem("api_key")) {
+      this.mountAPI();
     } else {
       const api_key = await createAPI({
         notes: [],
