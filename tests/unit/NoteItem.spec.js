@@ -3,12 +3,7 @@ import NoteItem from "@/components/NoteItem.vue";
 import { updateNotes } from "@/utils/API";
 
 const message = "Some error";
-jest.mock("../../src/utils/API", () => {
-  return {
-    title: "Some title",
-    textContent: "Some content"
-  };
-});
+jest.mock("../../src/utils/API");
 
 // const mockUpdateNotes = jest.fn(() => Promise.resolve(55));
 
