@@ -70,7 +70,8 @@ export default {
     sendMessage() {
       if (!this.noteData.title || !this.noteData.textContent) {
         this.message = "No empty fields allowed";
-      } else if (this.notes.length === this.max_notes) {
+      }
+      if (this.notes.length === this.max_notes) {
         this.message = "Notes limit exceeded";
       }
       eventBus.$emit("show-message", this.message);

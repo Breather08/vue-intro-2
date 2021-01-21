@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { eventBus } from "@/global/eventBus";
+// import { eventBus } from "@/global/eventBus";
 import { getNotes } from "@/utils/API";
 
 export default {
@@ -33,9 +33,9 @@ export default {
         this.amount = resp.data.length - 1;
       });
     }
-    eventBus.$on("send-notes", (data) => {
-      this.amount = data;
-    });
+    // eventBus.$on("send-notes", (data) => {
+    //   this.amount = data;
+    // });
   }
 };
 </script>

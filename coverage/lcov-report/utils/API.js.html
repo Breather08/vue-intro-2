@@ -22,9 +22,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/15</span>
+                <span class='fraction'>6/15</span>
             </div>
         
             
@@ -36,16 +36,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">42.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>6/14</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,9 +89,9 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -100,20 +100,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -121,7 +121,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import axios from "axios";
 &nbsp;
 const URL = "https://api.jsonbin.io/b";
-const API_KEY = () =&gt; localStorage.getItem("api_key");
+const API_KEY = <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >localStorage.getItem("api_key");</span>
 const API = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -131,20 +131,20 @@ const API = axios.create({
   }
 });
 &nbsp;
-export const getNotes = () =&gt;
-  API.get(`${URL}/${API_KEY()}`).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+export const getNotes = <span class="fstat-no" title="function not covered" >()</span> =&gt;
+<span class="cstat-no" title="statement not covered" >  API.get(`${URL}/${API_KEY()}`).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    throw err;</span>
   });
 &nbsp;
-export const createAPI = <span class="fstat-no" title="function not covered" >(n</span>ote) =&gt;
-<span class="cstat-no" title="statement not covered" >  API.post(URL, note)</span>
+export const createAPI = <span class="fstat-no" title="function not covered" >(b</span>ase) =&gt;
+<span class="cstat-no" title="statement not covered" >  API.post(URL, base)</span>
     .then(<span class="fstat-no" title="function not covered" >(r</span>esp) =&gt; <span class="cstat-no" title="statement not covered" >resp.data.id)</span>
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
 <span class="cstat-no" title="statement not covered" >      throw err.response.data;</span>
     });
 &nbsp;
-export const updateNotes = (editedNote) =&gt;
-  API.put(`${URL}/${API_KEY()}`, editedNote)
+export const updateNotes = <span class="fstat-no" title="function not covered" >(e</span>ditedNote) =&gt;
+<span class="cstat-no" title="statement not covered" >  API.put(`${URL}/${API_KEY()}`, editedNote)</span>
     .then(<span class="fstat-no" title="function not covered" >(r</span>esp) =&gt; <span class="cstat-no" title="statement not covered" >resp.data)</span>
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
 <span class="cstat-no" title="statement not covered" >      throw err;</span>
@@ -156,7 +156,7 @@ export const updateNotes = (editedNote) =&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jan 20 2021 15:42:58 GMT+0600 (East Kazakhstan Time)
+                at Thu Jan 21 2021 15:28:46 GMT+0600 (East Kazakhstan Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

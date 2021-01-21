@@ -1,6 +1,5 @@
 import { mount } from "@vue/test-utils";
 import NoteForm from "@/components/NoteForm.vue";
-import { createNote } from "@/utils/API";
 
 const message = "Some error";
 const componentData = {
@@ -13,8 +12,6 @@ const componentData = {
   API_ID: "",
   MAX_NOTES: 10
 };
-
-jest.mock("@/utils/API");
 
 describe("NoteForm.vue", () => {
   let wrapper;
@@ -63,15 +60,5 @@ describe("NoteForm.vue", () => {
     wrapper.setProps({ notes: Array(10) });
     clickAdd();
     expect(wrapper.vm.message).toEqual("Notes limit exceeded");
-  });
-
-  it("should correctly work with API", async () => {
-    expect(createNote).toHaveBeenCalledTimes(1);
-  });
-
-  it("should throw error when createNote fails", async () => {
-    const mockError = "Some error";
-    createNote.mockResolvedValueOnce(mockError);
-    expect(createNote).toHaveBeenCalledTimes(1);
   });
 });
