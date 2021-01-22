@@ -35,7 +35,9 @@ const api_key = "some_random_api_key";
 req.updateNotes.mockImplementation((note) => Promise.resolve(note));
 
 req.getNotes.mockImplementation(() =>
-  Promise.resolve([{ id: 10, title: "Test title", content: "Test content" }])
+  Promise.resolve({
+    data: { notes: [{ id: 10, title: "Test title", content: "Test content" }] }
+  })
 );
 
 req.createAPI.mockImplementation(() => api_key);
@@ -58,9 +60,9 @@ describe("NoteList.vue", () => {
   });
 
   it("should save data on refresh", async () => {
-    const refreshed = mount(NoteList, componentData);
+    const refreshed = await mount(NoteList, componentData);
     expect(req.getNotes).toHaveBeenCalledTimes(1);
-    expect(refreshed.vm._data.isLoading).toBeTruthy();
+    expect(refreshed.vm._data.isLoading).toBeFalsy();
   });
 
   it("should emit add-note correctly", async () => {

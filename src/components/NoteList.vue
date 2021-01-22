@@ -37,12 +37,12 @@ export default {
     NoteForm
   },
   methods: {
-    async mountAPI() {
-      await getNotes().then((resp) => {
+    mountAPI() {
+      getNotes().then((resp) => {
         this.notes = resp.data.notes;
         this.isLoading = false;
+        eventBus.$emit("send-notes", this.notes.length - 1);
       });
-      eventBus.$emit("send-notes", this.notes.length - 1);
     }
   },
   async created() {
